@@ -1,24 +1,34 @@
-import logo from './logo.svg';
 import './App.css';
+import { useForm } from 'react-hook-form';
 
 function App() {
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+  }; // your form submit function which will invoke after successful validation
+
+  console.log(watch('example')); // you can watch individual input by pass the name of the input
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+   <div className='App'>
+     <form onSubmit={handleSubmit(onSubmit)}>
+      {/* register your input into the hook by invoking the "register" function */}
+      <input {...register('example', { required: true })} />
+      {/* errors will return when field validation fails  */}
+      {errors.example && <p>This field is required</p>}
+      {/* include validation with required or other standard HTML validation rules */}
+      <input {...register('exampleRequired', { required: true })} />
+      {/* errors will return when field validation fails  */}
+      {errors.exampleRequired && <p>This field is required</p>}
+
+      <input type="submit" />
+    </form>
+   </div>
   );
 }
 
